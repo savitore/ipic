@@ -11,7 +11,8 @@ class SubjectsExpandable extends StatefulWidget {
   final String branch;
   final String year;
   final String prof;
-  SubjectsExpandable({required this.subject, required this.branch, required this.year, required this.prof});
+  final String admission_no;
+  SubjectsExpandable({required this.subject, required this.branch, required this.year, required this.prof, required this.admission_no});
 
   @override
   State<SubjectsExpandable> createState() => _SubjectsExpandableState();
@@ -26,6 +27,7 @@ class _SubjectsExpandableState extends State<SubjectsExpandable> {
   void initState() {
     super.initState();
     fetchMaterials();
+    getHttprequest();
   }
 
   Future<void> fetchMaterials() async{
@@ -55,9 +57,28 @@ class _SubjectsExpandableState extends State<SubjectsExpandable> {
           materials?.add(MaterialsModel(notice: data['documents'][i]['notice'], attachment: data['documents'][i]['attachment'], nameFile: data['documents'][i]['nameFile']));
         });
       }
-      flag=1;
     }catch(e){
       print(e.toString());
+    }
+  }
+  Future<void> getHttprequest() async {
+    String url ="https://script.google.com/macros/s/AKfycbzo3Y7RbXL5AeFFiB-v0zu19DGyzCkckcf2PAHs6jdl7-XXuhslffiU6qWsRtBCPNQe/exec";
+    try{
+      final response = await http.get(Uri.parse(url),headers: {'Content-Type':'application/json'});
+      var data= jsonDecode(response.body);
+      setState(() {
+        for(var i=0; i<data["data"].length;i++){
+          print("hi"+data["data"].length.toString());
+          if(widget.admission_no==data["data"][i]['Admission_ID']){
+
+          }else{
+
+          }
+          flag=1;
+        }
+      });
+    } catch(e){
+      print("catch/" + e.toString());
     }
   }
 

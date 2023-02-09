@@ -88,27 +88,8 @@ class _HomeState extends State<Home> {
         });
       }
       flag=1;
-      getHttprequest();
     }catch(e){
       print(e.toString());
-    }
-  }
-  Future<void> getHttprequest() async {
-    String url ="https://script.google.com/macros/s/AKfycbzo3Y7RbXL5AeFFiB-v0zu19DGyzCkckcf2PAHs6jdl7-XXuhslffiU6qWsRtBCPNQe/exec";
-    try{
-      final response = await http.get(Uri.parse(url),headers: {'Content-Type':'application/json'});
-      var data= jsonDecode(response.body);
-      setState(() {
-        for(var i=0; i<data["data"].length;i++){
-          print("hi"+data["data"].length.toString());
-          if(admission_no==data["data"][i]['Admission_ID']){
-            dataService.DataInsertAttendance(data["data"][i]['Admission_ID'], data["data"][i]['Date'], data["data"][i]['Time']);
-          }
-
-        }
-      });
-    } catch(e){
-      print("catch/" + e.toString());
     }
   }
 
@@ -139,7 +120,7 @@ class _HomeState extends State<Home> {
               onTap: (){
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SubjectsExpandable(subject: subjects.subject, branch: branch, year: year, prof: subjects.prof,)));
+                    MaterialPageRoute(builder: (context) => SubjectsExpandable(subject: subjects.subject, branch: branch, year: year, prof: subjects.prof, admission_no: admission_no,)));
               },
               child: Card(
                 color: Colors.white,

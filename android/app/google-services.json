@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "825730353830",
+    "project_id": "ipic-profs",
+    "storage_bucket": "ipic-profs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825730353830:android:503f1174d1645f11d48267",
+        "android_client_info": {
+          "package_name": "com.example.ipic_profs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825730353830-g5o7te14nvmesmtrbek6tkfjilir9o4b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpsYbZjWtEb5570TygTwQOqfMWavjl-0o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825730353830-g5o7te14nvmesmtrbek6tkfjilir9o4b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -104,6 +104,7 @@ class _HomeState extends State<Home> {
           if(admission_no==data["data"][i]['Admission_ID']){
             dataService.DataInsertAttendance(data["data"][i]['Admission_ID'], data["data"][i]['Date'], data["data"][i]['Time']);
           }
+
         }
       });
     } catch(e){

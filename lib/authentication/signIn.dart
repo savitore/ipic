@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ipic/authentication/signUp.dart';
 import 'package:ipic/services/auth.dart';
 import 'package:ipic/Utils/utils.dart';
 

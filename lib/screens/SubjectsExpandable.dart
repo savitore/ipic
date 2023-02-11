@@ -23,6 +23,8 @@ class _SubjectsExpandableState extends State<SubjectsExpandable> {
   List<MaterialsModel>? materials=[];
   int flag=0;
   double? _progress;
+  late String date;
+  late String attendance;
   @override
   void initState() {
     super.initState();
@@ -70,9 +72,12 @@ class _SubjectsExpandableState extends State<SubjectsExpandable> {
         for(var i=0; i<data["data"].length;i++){
           print("hi"+data["data"].length.toString());
           if(widget.admission_no==data["data"][i]['Admission_ID']){
-
+            date=data["data"][i]['Date'].toString().substring(0,10);
+            attendance="Present";
+            return;
           }else{
-
+            date=data["data"][1]['Date'].toString().substring(0,10);
+            attendance="Absent";
           }
           flag=1;
         }
@@ -104,7 +109,15 @@ class _SubjectsExpandableState extends State<SubjectsExpandable> {
                         children: [
                           Text('Your attendance: ',style: TextStyle(fontSize: 18),),
                         ],
-                      )
+                      ),
+                      SizedBox(height: 10,),
+                      Row(
+                        children: [
+                          Text(date+':',style: TextStyle(fontSize: 18),),
+                          SizedBox(width: 5,),
+                          Text(attendance,style: TextStyle(fontSize: 18),)
+                        ],
+                      ),
                     ],
                   ),
                 ),

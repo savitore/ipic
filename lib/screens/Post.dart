@@ -2,17 +2,19 @@ import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ipic_profs/Keys.dart';
 
 
 class Post extends StatefulWidget {
   final String subject;
   final String branch;
   final String year;
-  Post({required this.subject,required this.branch,required this.year});
+  const Post({super.key, required this.subject,required this.branch,required this.year});
 
   @override
   State<Post> createState() => _PostState();
@@ -40,10 +42,10 @@ class _PostState extends State<Post> {
         "nameFile":nameFile
       }
     };
-    HttpClient httpClient=new HttpClient();
+    HttpClient httpClient = HttpClient();
     HttpClientRequest httpClientRequest=await httpClient.postUrl(Uri.parse(baseUrl));
     httpClientRequest.headers.set("Content-Type", "application/json");
-    httpClientRequest.headers.set("api-key", "81FEjMN5H02pecyUbWBRC7PgCS2Mz4fmOo6LR7IOd2dp1SQ4DLHf6gCcn238huTf");
+    httpClientRequest.headers.set("api-key", Keys().apiKey);
     httpClientRequest.add(utf8.encode(jsonEncode(body)));
     HttpClientResponse response=await httpClientRequest.close();
     httpClient.close();
@@ -52,7 +54,9 @@ class _PostState extends State<Post> {
       contents.write(data);
     }
     var output=jsonDecode(contents.toString());
-    print(output['insertedId']);
+    if (kDebugMode) {
+      print(output['insertedId']);
+    }
   }
 
   @override
@@ -63,11 +67,11 @@ class _PostState extends State<Post> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Builder(
-          builder: (BuildContext){
+          builder: (BuildContext context){
             return IconButton(
                 onPressed: (){
                   Navigator.pop(context);
-                }, icon: Icon(Icons.cancel_outlined)
+                }, icon: const Icon(Icons.cancel_outlined)
             );
           },
         ),
@@ -83,7 +87,7 @@ class _PostState extends State<Post> {
               },
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.dehaze_rounded,color: Colors.black,),
+                prefixIcon: const Icon(Icons.dehaze_rounded,color: Colors.black,),
                 hintStyle: TextStyle(color: Colors.grey[700],fontSize: 18),
                   border: InputBorder.none,
                   hintText: "Share with your class"
@@ -108,9 +112,9 @@ class _PostState extends State<Post> {
               },
               child: Row(
                 children: [
-                  SizedBox(width: 12,),
-                  Icon(Icons.attachment),
-                  SizedBox(width: 20,),
+                  const SizedBox(width: 12,),
+                  const Icon(Icons.attachment),
+                  const SizedBox(width: 20,),
                   Text('Add attachment',style: TextStyle(color: Colors.grey[700],fontSize: 18),)
                 ],
               ),
@@ -122,7 +126,7 @@ class _PostState extends State<Post> {
             color: Colors.grey[300],
           ),
           buildProgress(),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -140,16 +144,17 @@ class _PostState extends State<Post> {
                       showToast();
                     }
                   },
-                  child: Text('Post',style: TextStyle(fontSize: 17),),
+                  child: const Text('Post',style: TextStyle(fontSize: 17),),
                 ),
               ),
-              SizedBox(width: 20,)
+              const SizedBox(width: 20,)
             ],
           )
         ],
       ),
     );
   }
+
   Future saveFile(PlatformFile file) async{
     final path='files/${file!.name}';
     final newFile = File(file!.path!);
@@ -165,6 +170,7 @@ class _PostState extends State<Post> {
       uploadTask= null;
     });
   }
+
   Widget buildProgress() => StreamBuilder<TaskSnapshot>(
     stream: uploadTask?.snapshotEvents,
     builder: (context,snapshot){
@@ -185,10 +191,11 @@ class _PostState extends State<Post> {
           ),
         );
       }else{
-         return Text('');
+         return const Text('');
       }
     },
   );
+
   void showToast() =>
       Fluttertoast.showToast(
           msg: "Please wait",

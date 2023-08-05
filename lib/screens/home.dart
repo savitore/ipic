@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ipic_profs/Keys.dart';
 
 import 'ClassesExpandable.dart';
 import '../models/ClassesModel.dart';
@@ -28,6 +30,7 @@ class _HomeState extends State<Home> {
     fetchClasses();
     fetchDataProfile();
   }
+
   Future<void> fetchDataProfile() async{
     String baseUrl ='https://data.mongodb-api.com/app/data-kwvwd/endpoint/data/v1/action/findOne';
     final body={
@@ -38,13 +41,13 @@ class _HomeState extends State<Home> {
         "email": email
       }
     };
-    final response;
+    final http.Response response;
     try{
       response=await http.post(Uri.parse(baseUrl),
           headers: {'Content-Type':'application/json',
             'Accept':'application/json',
             'Access-Control-Request-Headers':'Access-Control-Allow-Origin, Accept',
-            'api-key':'81FEjMN5H02pecyUbWBRC7PgCS2Mz4fmOo6LR7IOd2dp1SQ4DLHf6gCcn238huTf'},
+            'api-key': Keys().apiKey},
           body: jsonEncode(body)
       );
       var data = jsonDecode(response.body);
@@ -53,9 +56,12 @@ class _HomeState extends State<Home> {
       });
       flag=1;
     }catch(e){
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
+
   Future<void> fetchClasses() async{
     String baseUrl ='https://data.mongodb-api.com/app/data-kwvwd/endpoint/data/v1/action/find';
     final body={
@@ -63,13 +69,13 @@ class _HomeState extends State<Home> {
       "database":"profs",
       "collection":email,
     };
-    final response;
+    final http.Response response;
     try{
       response=await http.post(Uri.parse(baseUrl),
           headers: {'Content-Type':'application/json',
             'Accept':'application/json',
             'Access-Control-Request-Headers':'Access-Control-Allow-Origin, Accept',
-            'api-key':'81FEjMN5H02pecyUbWBRC7PgCS2Mz4fmOo6LR7IOd2dp1SQ4DLHf6gCcn238huTf'},
+            'api-key': Keys().apiKey},
           body: jsonEncode(body)
       );
       var data = jsonDecode(response.body);
@@ -80,10 +86,11 @@ class _HomeState extends State<Home> {
       }
       flag=1;
     }catch(e){
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -92,24 +99,22 @@ class _HomeState extends State<Home> {
           appBar: AppBar(
             backgroundColor: Colors.blue[500],
             centerTitle: true,
-            title: Text('IIT DHANBAD'),
+            title: const Text('IIT DHANBAD'),
           ),
           drawer: Drawer(
             backgroundColor: Colors.white,
-            child: Container(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    MyDrawer(name, email!)
-                  ],
-                ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  MyDrawer(name, email!)
+                ],
               ),
             ),
           ),
         body: RefreshIndicator(
           onRefresh: (){
             return Future.delayed(
-              Duration(seconds: 2),
+              const Duration(seconds: 2),
                 (){
                 fetchClasses();
                 }
@@ -121,8 +126,8 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('My Classes',style: TextStyle(fontSize: 30,color: Colors.black,fontWeight: FontWeight.w500),),
-                  SizedBox(height: 10,),
+                  const Text('My Classes',style: TextStyle(fontSize: 30,color: Colors.black,fontWeight: FontWeight.w500),),
+                  const SizedBox(height: 10,),
                   Column(
                     children: list!.map((classes){
                         return InkWell(
@@ -139,7 +144,7 @@ class _HomeState extends State<Home> {
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(classes.subject,style: TextStyle(fontSize: 28,fontWeight: FontWeight.w500),),
+                                    Text(classes.subject,style: const TextStyle(fontSize: 28,fontWeight: FontWeight.w500),),
                                     Text(classes.branch,style: TextStyle(color: Colors.grey[800]),),
                                     Text(classes.year,style: TextStyle(color: Colors.grey[800]))
                                   ],
@@ -157,7 +162,7 @@ class _HomeState extends State<Home> {
         ),
       );
     }else{
-      return Scaffold(
+      return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }

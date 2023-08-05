@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:ipic_profs/Keys.dart';
 import 'package:ipic_profs/screens/Post.dart';
 
 import '../models/MaterialsModel.dart';
@@ -12,7 +14,7 @@ class ClassesExpandable extends StatefulWidget {
   final String branch;
   final String year;
   final String name;
-  ClassesExpandable({required this.subject,required this.branch,required this.year, required this.name});
+  const ClassesExpandable({super.key, required this.subject,required this.branch,required this.year, required this.name});
 
   @override
   State<ClassesExpandable> createState() => _ClassesExpandableState();
@@ -21,7 +23,7 @@ class ClassesExpandable extends StatefulWidget {
 class _ClassesExpandableState extends State<ClassesExpandable> {
 
   int flag=0;
-  String no_of_students='';
+  String noOfStudents='';
   List<StudentsModel>? list=[];
   List<MaterialsModel>? materials=[];
   double? _progress;
@@ -43,25 +45,27 @@ class _ClassesExpandableState extends State<ClassesExpandable> {
         "year": widget.year
       }
     };
-    final response;
+    final http.Response response;
     try{
       response=await http.post(Uri.parse(baseUrl),
           headers: {'Content-Type':'application/json',
             'Accept':'application/json',
             'Access-Control-Request-Headers':'Access-Control-Allow-Origin, Accept',
-            'api-key':'81FEjMN5H02pecyUbWBRC7PgCS2Mz4fmOo6LR7IOd2dp1SQ4DLHf6gCcn238huTf'},
+            'api-key':Keys().apiKey},
           body: jsonEncode(body)
       );
       var data = jsonDecode(response.body);
       for(int i=0; i<data['documents'].length;i++){
         setState((){
           list?.add(StudentsModel(name: data['documents'][i]['name'], count: (i+1).toString(),));
-          no_of_students=data['documents'].length.toString();
+          noOfStudents=data['documents'].length.toString();
         });
       }
       flag=1;
     }catch(e){
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
   Future<void> fetchMaterials() async{
@@ -76,13 +80,13 @@ class _ClassesExpandableState extends State<ClassesExpandable> {
         "year": widget.year
       }
     };
-    final response;
+    final http.Response response;
     try{
       response=await http.post(Uri.parse(baseUrl),
           headers: {'Content-Type':'application/json',
             'Accept':'application/json',
             'Access-Control-Request-Headers':'Access-Control-Allow-Origin, Accept',
-            'api-key':'81FEjMN5H02pecyUbWBRC7PgCS2Mz4fmOo6LR7IOd2dp1SQ4DLHf6gCcn238huTf'},
+            'api-key':Keys().apiKey},
           body: jsonEncode(body)
       );
       var data = jsonDecode(response.body);
@@ -93,57 +97,55 @@ class _ClassesExpandableState extends State<ClassesExpandable> {
       }
       flag=1;
     }catch(e){
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
   @override
   Widget build(BuildContext context) {
-    if(flag==1){
-      return Scaffold(
+      return flag==1 ?
+      Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text(widget.subject),
           actions: [
             InkWell(
-                child: Icon(Icons.info_outline),
+                child: const Icon(Icons.info_outline),
               onTap: (){
                   showDialog(context: context, builder: (context){
-                    return Container(
-                      child: AlertDialog(
-                        scrollable: true,
-                        actionsAlignment: MainAxisAlignment.center,
-                        title: Text('Students',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25)),
-                        content: Container(
-                          child: Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Column(
-                              children: list!.map((classes){
-                                return Card(
-                                  child: ListTile(
-                                    title: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                    return AlertDialog(
+                      scrollable: true,
+                      actionsAlignment: MainAxisAlignment.center,
+                      title: const Text('Students',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25)),
+                      content: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: list!.map((classes){
+                            return Card(
+                              child: ListTile(
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
                                       children: [
-                                        Row(
-                                          children: [
-                                            Text(classes.count+'.',style: TextStyle(fontSize: 20)),
-                                            SizedBox(width: 5,),
-                                            Text(classes.name,style: TextStyle(fontSize: 20),),
-                                          ],
-                                        )
+                                        Text('${classes.count}.',style: const TextStyle(fontSize: 20)),
+                                        const SizedBox(width: 5,),
+                                        Text(classes.name,style: const TextStyle(fontSize: 20),),
                                       ],
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            )
-                          ),
-                        ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        )
                       ),
                     );
                   });
               },
             ),
-            SizedBox(width: 10,)
+            const SizedBox(width: 10,)
           ],
         ),
         body: SingleChildScrollView(
@@ -156,8 +158,8 @@ class _ClassesExpandableState extends State<ClassesExpandable> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.branch+' ('+widget.year+')',style: TextStyle(fontSize: 20),),
-                      Text(no_of_students+' students',style: TextStyle(fontSize: 18)),
+                      Text('${widget.branch} (${widget.year})',style: const TextStyle(fontSize: 20),),
+                      Text('$noOfStudents students',style: const TextStyle(fontSize: 18)),
                     ],
                   ),
                 ),
@@ -168,18 +170,18 @@ class _ClassesExpandableState extends State<ClassesExpandable> {
                       builder: (context)=> Post(subject: widget.subject, branch: widget.branch, year: widget.year,))
                   );
                 },
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             backgroundImage: AssetImage('assets/empty_person.jpg'),
                             radius: 20,
                           ),
-                          SizedBox(width: 15,),
+                          const SizedBox(width: 15,),
                           Text('Announce something to your class...',style: TextStyle(color: Colors.grey[600],fontSize: MediaQuery.of(context).size.width/25),)
                         ],
                       ),
@@ -196,7 +198,7 @@ class _ClassesExpandableState extends State<ClassesExpandable> {
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
+                            const Row(
                               children: [
                                 CircleAvatar(
                                   backgroundImage: AssetImage('assets/empty_person.jpg'),
@@ -207,14 +209,14 @@ class _ClassesExpandableState extends State<ClassesExpandable> {
                                 Text('You',style: TextStyle(fontSize: 23),),
                               ],
                             ),
-                            SizedBox(height: 20,),
-                            Text(materials.notice+'.',style: TextStyle(fontSize: 20)),
-                            SizedBox(height: 15,),
+                            const SizedBox(height: 20,),
+                            Text('${materials.notice}.',style: const TextStyle(fontSize: 20)),
+                            const SizedBox(height: 15,),
                             Container(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                   border: Border.all(),
-                                borderRadius: BorderRadius.all(Radius.circular(50))
+                                borderRadius: const BorderRadius.all(Radius.circular(50))
                               ),
                               child: InkWell(
                                 onTap: (){
@@ -226,7 +228,9 @@ class _ClassesExpandableState extends State<ClassesExpandable> {
                                         });
                                       },
                                     onDownloadCompleted: (value){
-                                        print('path $value');
+                                        if (kDebugMode) {
+                                          print('path $value');
+                                        }
                                         setState(() {
                                           _progress=null;
                                         });
@@ -246,14 +250,12 @@ class _ClassesExpandableState extends State<ClassesExpandable> {
             ],
           ),
         ),
-      );
-    }else{
-      return Scaffold(
+      ) :
+       const Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: CircularProgressIndicator(),
         ),
       );
-    }
   }
 }

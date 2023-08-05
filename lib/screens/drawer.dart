@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../authentication/SignIn.dart';
 
 class MyDrawer extends StatefulWidget {
-  late final String name,email;
-  MyDrawer(this.name,this.email);
+  final String name,email;
+  const MyDrawer(this.name,this.email, {super.key});
 
   @override
   State<MyDrawer> createState() => _MyDrawerState();
@@ -34,25 +34,25 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ],
           ),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Divider(height: 1,thickness: 0.5,color: Colors.grey[500],),
-          SizedBox(height: 550,),
+          const SizedBox(height: 550,),
           Divider(height: 1,thickness: 0.5,color: Colors.grey[500],),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Row(
             children: [
               GestureDetector(
-                child: Text('Log out'),
+                child: const Text('Log out'),
                 onTap: (){
                   FirebaseAuth.instance.signOut();
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context)=> SignIn())
+                      builder: (context)=> const SignIn())
                   );
                 },
               ),
             ],
           ),
-          SizedBox(height: 50,)
+          const SizedBox(height: 50,)
         ],
       ),
     );

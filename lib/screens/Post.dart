@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:ipic_profs/Keys.dart';
+
+import '../Utils/Keys.dart';
 
 
 class Post extends StatefulWidget {

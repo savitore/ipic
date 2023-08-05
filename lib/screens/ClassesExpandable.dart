@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:ipic_profs/Keys.dart';
 import 'package:ipic_profs/screens/Post.dart';
 
+import '../Utils/Keys.dart';
 import '../models/MaterialsModel.dart';
 import '../models/StudentsModel.dart';
 

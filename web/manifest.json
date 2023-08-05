@@ -1,6 +1,6 @@
 {
-    "name": "ipic",
-    "short_name": "ipic",
+    "name": "ipic_profs",
+    "short_name": "ipic_profs",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

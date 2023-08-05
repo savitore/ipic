@@ -1,3 +1,2 @@
-# ipic
+# ipic_profs
 
-A new Flutter project.

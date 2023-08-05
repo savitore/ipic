@@ -24,8 +24,8 @@ class _SignInState extends State<SignIn> {
             key: formKey,
             child: Column(
               children: [
-                Text('SIGN IN',style: TextStyle(color: Colors.white,fontSize: 25),),
-                SizedBox(height: 30,),
+                const Text('SIGN IN',style: TextStyle(color: Colors.white,fontSize: 25),),
+                const SizedBox(height: 30,),
                 TextFormField(
                   validator: (val)=> val!.isEmpty? 'Enter Your Email':null,
                   keyboardType: TextInputType.text,
@@ -43,7 +43,7 @@ class _SignInState extends State<SignIn> {
                       hintText: "Enter Your Email"
                   ),
                 ),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 TextFormField(
                   validator: (val)=> val!.isEmpty? 'Enter Your Password':null,
                   obscureText: true,
@@ -62,7 +62,7 @@ class _SignInState extends State<SignIn> {
                       hintText: "Enter Your Password"
                   ),
                 ),
-                SizedBox(height: 40,),
+                const SizedBox(height: 40,),
                 SizedBox(
                   height: 45,
                   width: double.infinity,
@@ -71,10 +71,10 @@ class _SignInState extends State<SignIn> {
                       if(formKey.currentState!.validate()){
                         showLoaderDialog(BuildContext context){
                           AlertDialog alert = AlertDialog(
-                            content: new Row(
+                            content: Row(
                               children: [
-                                CircularProgressIndicator(),
-                                Container(margin: EdgeInsets.only(left: 7),child: Text("Loading..."),)
+                                const CircularProgressIndicator(),
+                                Container(margin: const EdgeInsets.only(left: 7),child: const Text("Loading..."),)
                               ],
                             ),
                           );
@@ -90,11 +90,11 @@ class _SignInState extends State<SignIn> {
                         authService.signIn(email, password,context);
                       }
                     },
-                    child: Text('LOGIN',style: TextStyle(color: Colors.blue,fontSize: 17),),
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.white,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+                    child: const Text('LOGIN',style: TextStyle(color: Colors.blue,fontSize: 17),),
                   ),
                 ),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
               ],
             ),
           ),

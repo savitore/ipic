@@ -11,9 +11,9 @@ Future<void> main() async {
   User? firebaseUser = FirebaseAuth.instance.currentUser;
   Widget first;
   if (firebaseUser != null) {
-    first = Home();
+    first = const Home();
   } else {
-    first = SignIn();
+    first = const SignIn();
   }
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ipic/Utils/Keys.dart';
 import 'package:ipic/screens/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'package:ipic/services/data.dart';
@@ -40,13 +41,13 @@ class _HomeState extends State<Home> {
         "email": email
       }
     };
-    final response;
+    final http.Response response;
     try{
       response=await http.post(Uri.parse(baseUrl),
           headers: {'Content-Type':'application/json',
             'Accept':'application/json',
             'Access-Control-Request-Headers':'Access-Control-Allow-Origin, Accept',
-            'api-key':'81FEjMN5H02pecyUbWBRC7PgCS2Mz4fmOo6LR7IOd2dp1SQ4DLHf6gCcn238huTf'},
+            'api-key':Keys().apiKey},
           body: jsonEncode(body)
       );
       var data = jsonDecode(response.body);
@@ -78,7 +79,7 @@ class _HomeState extends State<Home> {
           headers: {'Content-Type':'application/json',
             'Accept':'application/json',
             'Access-Control-Request-Headers':'Access-Control-Allow-Origin, Accept',
-            'api-key':'81FEjMN5H02pecyUbWBRC7PgCS2Mz4fmOo6LR7IOd2dp1SQ4DLHf6gCcn238huTf'},
+            'api-key':Keys().apiKey},
           body: jsonEncode(body)
       );
       var data = jsonDecode(response.body);
@@ -100,16 +101,14 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           backgroundColor: Colors.blue[500],
           centerTitle: true,
-          title: Text('Classroom'),
+          title: const Text('Classroom'),
         ),
         drawer: Drawer(
-          child: Container(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  MyDrawer(admission_no, year, branch, name, email!)
-                ],
-              ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                MyDrawer(admission_no, year, branch, name, email!)
+              ],
             ),
           ),
         ),
@@ -130,10 +129,10 @@ class _HomeState extends State<Home> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(subjects.subject,style: TextStyle(fontSize: 28,fontWeight: FontWeight.w500),),
-                        SizedBox(height: 5,),
+                        Text(subjects.subject,style: const TextStyle(fontSize: 28,fontWeight: FontWeight.w500),),
+                        const SizedBox(height: 5,),
                         Text(subjects.prof,style: TextStyle(color: Colors.grey[800],fontSize: 20),),
-                        SizedBox(height: 5 ,)
+                        const SizedBox(height: 5 ,)
                       ],
                     ),
                   ),
@@ -144,7 +143,7 @@ class _HomeState extends State<Home> {
         ),
       );
     }else{
-      return Scaffold(
+      return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }

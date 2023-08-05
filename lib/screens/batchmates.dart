@@ -1,14 +1,16 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ipic/Utils/Keys.dart';
 
 import '../models/StudentsModel.dart';
 
 class Batchmates extends StatefulWidget {
   final String branch;
   final String year;
-  Batchmates({required this.branch,required this.year});
+  const Batchmates({super.key, required this.branch,required this.year});
 
   @override
   State<Batchmates> createState() => _BatchmatesState();
@@ -35,13 +37,13 @@ class _BatchmatesState extends State<Batchmates> {
         "year": widget.year
       }
     };
-    final response;
+    final http.Response response;
     try{
       response=await http.post(Uri.parse(baseUrl),
           headers: {'Content-Type':'application/json',
             'Accept':'application/json',
             'Access-Control-Request-Headers':'Access-Control-Allow-Origin, Accept',
-            'api-key':'81FEjMN5H02pecyUbWBRC7PgCS2Mz4fmOo6LR7IOd2dp1SQ4DLHf6gCcn238huTf'},
+            'api-key':Keys().apiKey},
           body: jsonEncode(body)
       );
       var data = jsonDecode(response.body);
@@ -52,16 +54,18 @@ class _BatchmatesState extends State<Batchmates> {
       }
       flag=1;
     }catch(e){
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if(flag==1){
-      return Scaffold(
+      return flag==1 ?
+      Scaffold(
         appBar: AppBar(
-          title: Text('Batchmates'),
+          title: const Text('Batchmates'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -74,9 +78,9 @@ class _BatchmatesState extends State<Batchmates> {
                     children: [
                       Row(
                         children: [
-                          Text(classes.count+'.',style: TextStyle(fontSize: 20)),
-                          SizedBox(width: 5,),
-                          Text(classes.name,style: TextStyle(fontSize: 20),),
+                          Text('${classes.count}.',style: const TextStyle(fontSize: 20)),
+                          const SizedBox(width: 5,),
+                          Text(classes.name,style: const TextStyle(fontSize: 20),),
                         ],
                       )
                     ],
@@ -86,13 +90,11 @@ class _BatchmatesState extends State<Batchmates> {
             }).toList(),
           ),
         ),
-      );
-    }else{
-      return Scaffold(
+      ) :
+      const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
         ),
       );
-    }
   }
 }

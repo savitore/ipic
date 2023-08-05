@@ -6,8 +6,8 @@ import 'package:ipic/screens/profile.dart';
 import '../authentication/signIn.dart';
 
 class MyDrawer extends StatefulWidget {
-  late final String name,email,branch,year,admission_no;
-  MyDrawer(this.admission_no,this.year,this.branch,this.name,this.email);
+  final String name,email,branch,year,admission_no;
+  const MyDrawer(this.admission_no,this.year,this.branch,this.name,this.email, {super.key});
 
   @override
   State<MyDrawer> createState() => _MyDrawerState();
@@ -33,7 +33,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 children: [
                   Row(
                     children: [
-                      Text(widget.name,style: TextStyle(fontSize: 30),),
+                      Text(widget.name,style: const TextStyle(fontSize: 30),),
                     ],
                   ),
                   Row(
@@ -41,8 +41,8 @@ class _MyDrawerState extends State<MyDrawer> {
                       Text(widget.admission_no,style: TextStyle(fontSize: 15,color: Colors.grey[600]),),
                     ],
                   ),
-                  SizedBox(height: 5,),
-                  Row(
+                  const SizedBox(height: 5,),
+                  const Row(
                     children: [
                       Text('View Profile')
                     ],
@@ -50,16 +50,16 @@ class _MyDrawerState extends State<MyDrawer> {
                 ],
               ),
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             Divider(height: 1,thickness: 0.5,color: Colors.grey[500],),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             InkWell(
               onTap: (){
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context)=> Batchmates(branch: widget.branch, year: widget.year,)
                 ));
               },
-              child: Row(
+              child: const Row(
                 children: [
                   Icon(Icons.person_outline,size: 22,),
                   SizedBox(width: 5,),
@@ -67,17 +67,17 @@ class _MyDrawerState extends State<MyDrawer> {
                 ],
               ),
             ),
-            SizedBox(height: 400,),
+            const SizedBox(height: 400,),
             Divider(height: 1,thickness: 0.5,color: Colors.grey[500],),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             Row(
               children: [
                 GestureDetector(
-                    child: Text('Log out'),
+                    child: const Text('Log out'),
                 onTap: (){
                   FirebaseAuth.instance.signOut();
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context)=> SignIn())
+                      builder: (context)=> const SignIn())
                   );
                 },
                 ),
